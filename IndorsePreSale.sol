@@ -55,7 +55,7 @@ contract IndorsePreSale is SafeMath {
       ethFundDeposit = _ethFundDeposit;
       owner = msg.sender;
       fundingStart = now;
-      fundingEnd = fundingStart + _duration * 1 minutes;
+      fundingEnd = fundingStart + _duration * 1 days;
       totalSupply = 0;
     }
 
