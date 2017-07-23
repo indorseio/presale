@@ -20,18 +20,19 @@ contract SafeMath {
     }
 }
 
-contract IndorsePreSale is SafeMath {
+contract IndorsePreSale is SafeMath{
     // Fund deposit address
     address public ethFundDeposit;                              // deposit address for ETH for Indorse
     address public owner;                                       // Owner of the pre sale contract
+    mapping (address => uint256) public whiteList;
 
     // presale parameters
     bool public isFinalized;                                    // switched to true in operational state
     uint256 public fundingStart;
     uint256 public fundingEnd;
     uint256 public constant WEI_PER_ETHER = 1000000000000000000;
-    uint256 public constant maxLimit =  80 * WEI_PER_ETHER;     // Maximum limit for taking in the money
-    uint256 public constant minRequired = 10 * WEI_PER_ETHER;
+    uint256 public constant maxLimit =  17000 * WEI_PER_ETHER;     // Maximum limit for taking in the money
+    uint256 public constant minRequired = 100 * WEI_PER_ETHER;
     uint256 public totalSupply;
     mapping (address => uint256) public balances;
     
@@ -55,7 +56,7 @@ contract IndorsePreSale is SafeMath {
       ethFundDeposit = _ethFundDeposit;
       owner = msg.sender;
       fundingStart = now;
-      fundingEnd = fundingStart + _duration * 1 days;
+      fundingEnd = fundingStart + _duration * 1 minutes;
       totalSupply = 0;
     }
 
@@ -68,6 +69,7 @@ contract IndorsePreSale is SafeMath {
       require (now <= fundingEnd);
       require (msg.value > 0);
       require (checkedSupply <= maxLimit);
+      require (whiteList[msg.sender] == 1);
       if (balances[msg.sender] != 0){
         balances[msg.sender] = safeAdd(balances[msg.sender], msg.value);
       } else {
@@ -76,6 +78,10 @@ contract IndorsePreSale is SafeMath {
       
       totalSupply = safeAdd(totalSupply, msg.value);
       ethFundDeposit.transfer(this.balance);                     // send the eth to Indorse multi-sig
+    }
+    
+    function setWhiteList(address _whitelisted) onlyOwner {
+        whiteList[_whitelisted] = 1;
     }
 
     /// @dev Ends the funding period and sends the ETH home
