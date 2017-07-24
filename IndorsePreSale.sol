@@ -30,7 +30,7 @@ contract IndorsePreSale is SafeMath{
     bool public isFinalized;                                    // switched to true in operational state
     // uint256 public constant WEI_PER_ETHER = 1000000000000000000;
     uint256 public constant maxLimit =  17000 ether;     // Maximum limit for taking in the money
-    uint256 public constant minRequired = 100 ether;
+    uint256 public constant minRequired = 100 ether;     // Minimum contribution per person
     uint256 public totalSupply;
     mapping (address => uint256) public balances;
     
@@ -40,12 +40,6 @@ contract IndorsePreSale is SafeMath{
     modifier onlyOwner() {
       require (msg.sender == owner);
       _;
-    }
-
-    function transferOwnership(address newOwner) onlyOwner {
-      if (newOwner != address(0)) {
-        owner = newOwner;
-      }
     }
 
     // @dev constructor
