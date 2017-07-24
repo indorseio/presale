@@ -30,9 +30,9 @@ contract IndorsePreSale is SafeMath{
     bool public isFinalized;                                    // switched to true in operational state
     uint256 public fundingStart;
     uint256 public fundingEnd;
-    uint256 public constant WEI_PER_ETHER = 1000000000000000000;
-    uint256 public constant maxLimit =  17000 * WEI_PER_ETHER;     // Maximum limit for taking in the money
-    uint256 public constant minRequired = 100 * WEI_PER_ETHER;
+    // uint256 public constant WEI_PER_ETHER = 1000000000000000000;
+    uint256 public constant maxLimit =  17000 Ether;     // Maximum limit for taking in the money
+    uint256 public constant minRequired = 100 Ether;
     uint256 public totalSupply;
     mapping (address => uint256) public balances;
     
@@ -56,7 +56,7 @@ contract IndorsePreSale is SafeMath{
       ethFundDeposit = _ethFundDeposit;
       owner = msg.sender;
       fundingStart = now;
-      fundingEnd = fundingStart + _duration * 1 minutes;
+      fundingEnd = fundingStart + _duration * 1 days;
       totalSupply = 0;
     }
 
@@ -67,16 +67,12 @@ contract IndorsePreSale is SafeMath{
       require (!isFinalized);                                   // Cannot accept Ether after finalizing the contract
       require (now >= fundingStart);
       require (now <= fundingEnd);
-      require (msg.value > 0);
       require (checkedSupply <= maxLimit);
       require (whiteList[msg.sender] == 1);
-      if (balances[msg.sender] != 0){
-        balances[msg.sender] = safeAdd(balances[msg.sender], msg.value);
-      } else {
-        balances[msg.sender] = msg.value;
-      }
+      balances[msg.sender] = safeAdd(balances[msg.sender], msg.value);
       
       totalSupply = safeAdd(totalSupply, msg.value);
+      Contribution(msg.sender, msg.value);
       ethFundDeposit.transfer(this.balance);                     // send the eth to Indorse multi-sig
     }
     
@@ -93,17 +89,4 @@ contract IndorsePreSale is SafeMath{
       isFinalized = true;
       ethFundDeposit.transfer(this.balance);                     // send the eth to Indorse multi-sig
     }
-
-    /// @dev Allows contributors to recover their ether in the case of a failed funding campaign.
-    function refund() external onlyOwner{
-      require (!isFinalized);                                   // prevents refund if operational
-      require (now >= fundingEnd);                              // prevents refund until sale period is over
-      require (msg.sender != ethFundDeposit);                   // Indorse not entitled to a refund
-      uint256 retVal = balances[msg.sender];
-      require (retVal != 0);
-      balances[msg.sender] = 0;
-      totalSupply = safeSubtract(totalSupply, retVal);          // extra safe
-      msg.sender.transfer(retVal);       
-    }
-
 }
