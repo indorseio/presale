@@ -28,11 +28,9 @@ contract IndorsePreSale is SafeMath{
 
     // presale parameters
     bool public isFinalized;                                    // switched to true in operational state
-    uint256 public fundingStart;
-    uint256 public fundingEnd;
     // uint256 public constant WEI_PER_ETHER = 1000000000000000000;
-    uint256 public constant maxLimit =  17000 Ether;     // Maximum limit for taking in the money
-    uint256 public constant minRequired = 100 Ether;
+    uint256 public constant maxLimit =  17000 ether;     // Maximum limit for taking in the money
+    uint256 public constant minRequired = 100 ether;
     uint256 public totalSupply;
     mapping (address => uint256) public balances;
     
@@ -51,12 +49,10 @@ contract IndorsePreSale is SafeMath{
     }
 
     // @dev constructor
-    function IndorsePreSale(address _ethFundDeposit, uint256 _duration) {
+    function IndorsePreSale(address _ethFundDeposit) {
       isFinalized = false;                                      //controls pre through crowdsale state
       ethFundDeposit = _ethFundDeposit;
       owner = msg.sender;
-      fundingStart = now;
-      fundingEnd = fundingStart + _duration * 1 days;
       totalSupply = 0;
     }
 
@@ -65,8 +61,6 @@ contract IndorsePreSale is SafeMath{
       uint256 checkedSupply = safeAdd(totalSupply, msg.value);
       require (msg.value >= minRequired);                        // The contribution needs to be above 100 Ether
       require (!isFinalized);                                   // Cannot accept Ether after finalizing the contract
-      require (now >= fundingStart);
-      require (now <= fundingEnd);
       require (checkedSupply <= maxLimit);
       require (whiteList[msg.sender] == 1);
       balances[msg.sender] = safeAdd(balances[msg.sender], msg.value);
@@ -81,10 +75,8 @@ contract IndorsePreSale is SafeMath{
     }
 
     /// @dev Ends the funding period and sends the ETH home
-    function finalize() external {
+    function finalize() external onlyOwner {
       require (!isFinalized);
-      require (msg.sender == ethFundDeposit);                   // locks finalize to the ultimate ETH owner
-      require (now >= fundingEnd);
       // move to operational
       isFinalized = true;
       ethFundDeposit.transfer(this.balance);                     // send the eth to Indorse multi-sig
