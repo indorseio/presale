@@ -21,16 +21,17 @@ contract SafeMath {
 }
 
 contract IndorsePreSale is SafeMath{
-    // Fund deposit address
-    address public ethFundDeposit;                              // deposit address for ETH for Indorse
+    // Fund deposit address - to be changed while deploying the actual contract
+    address public ethFundDeposit = "0x2732ED841ee5E47A40e55809ac3fCC258F73B8a9";                              // test address for Mainnet
+    // address public ethFundDeposit = "0x00f535a9C0e73a319Ed6561caB50632c6c886E5f";                                 // test address for Kovan
+    // address public ethFundDeposit = "0xbbe466a3a5757D83Ebd1d1Ff987860Efa7B3e219";                                 // test address for Private Net
     address public owner;                                       // Owner of the pre sale contract
     mapping (address => uint256) public whiteList;
 
     // presale parameters
     bool public isFinalized;                                    // switched to true in operational state
-    // uint256 public constant WEI_PER_ETHER = 1000000000000000000;
-    uint256 public constant maxLimit =  17000 ether;     // Maximum limit for taking in the money
-    uint256 public constant minRequired = 100 ether;     // Minimum contribution per person
+    uint256 public constant maxLimit =  17000 ether;            // Maximum limit for taking in the money
+    uint256 public constant minRequired = 100 ether;            // Minimum contribution per person
     uint256 public totalSupply;
     mapping (address => uint256) public balances;
     
@@ -43,9 +44,8 @@ contract IndorsePreSale is SafeMath{
     }
 
     // @dev constructor
-    function IndorsePreSale(address _ethFundDeposit) {
+    function IndorsePreSale() {
       isFinalized = false;                                      //controls pre through crowdsale state
-      ethFundDeposit = _ethFundDeposit;
       owner = msg.sender;
       totalSupply = 0;
     }
@@ -54,7 +54,7 @@ contract IndorsePreSale is SafeMath{
     function() payable {           
       uint256 checkedSupply = safeAdd(totalSupply, msg.value);
       require (msg.value >= minRequired);                        // The contribution needs to be above 100 Ether
-      require (!isFinalized);                                   // Cannot accept Ether after finalizing the contract
+      require (!isFinalized);                                    // Cannot accept Ether after finalizing the contract
       require (checkedSupply <= maxLimit);
       require (whiteList[msg.sender] == 1);
       balances[msg.sender] = safeAdd(balances[msg.sender], msg.value);
