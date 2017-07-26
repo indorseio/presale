@@ -65,7 +65,11 @@ contract IndorsePreSale is SafeMath{
     }
     
     function setWhiteList(address _whitelisted) onlyOwner {
-        whiteList[_whitelisted] = 1;
+      whiteList[_whitelisted] = 1;
+    }
+
+    function removeWhiteList(address _whitelisted) onlyOwner {
+      whiteList[_whitelisted] = 0;
     }
 
     /// @dev Ends the funding period and sends the ETH home
