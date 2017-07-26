@@ -29,7 +29,7 @@ contract IndorsePreSale is SafeMath{
 
     // presale parameters
     bool public isFinalized;                                    // switched to true in operational state
-    uint256 public constant maxLimit =  17000 ether;            // Maximum limit for taking in the money
+    uint256 public constant maxLimit =  13500 ether;            // Maximum limit for taking in the money
     uint256 public constant minRequired = 100 ether;            // Minimum contribution per person
     uint256 public totalSupply;
     mapping (address => uint256) public balances;

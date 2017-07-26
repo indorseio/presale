@@ -1,6 +1,6 @@
-INDORSE PRESALE TOKENS
+INDORSE PRESALE CONTRACT
 =====================================================
-You can more info about Indorse at http://indorse.io
+You can more info about Indorse at https://indorse.io
 
 
 TECH DETAILS ABOUT THE INDORSE PRESALE CONTRACT
@@ -8,11 +8,9 @@ TECH DETAILS ABOUT THE INDORSE PRESALE CONTRACT
 
 1. IndorsePreSale
 
-The sale contract launches with the following parameters
-* ethFundDeposit address
-* duration in days
+(This contract has a ethFundDeposit address hard-coded in the contract)
 
-The minimum amount accepted in the presale is 100 Ether per Ethereum address and the overall cap on the public pre-sale is 17000 Ether. 
+The minimum amount accepted in the presale is 100 Ether per Ethereum address and the overall cap on the public pre-sale is 13500 Ether. 
 
 This is the process for presale - 
 ======================================================
