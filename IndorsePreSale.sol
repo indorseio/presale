@@ -20,11 +20,10 @@ contract SafeMath {
     }
 }
 
+
 contract IndorsePreSale is SafeMath{
-    // Fund deposit address - to be changed while deploying the actual contract
-    address public ethFundDeposit = "0x2732ED841ee5E47A40e55809ac3fCC258F73B8a9";                              // test address for Mainnet
-    // address public ethFundDeposit = "0x00f535a9C0e73a319Ed6561caB50632c6c886E5f";                                 // test address for Kovan
-    // address public ethFundDeposit = "0xbbe466a3a5757D83Ebd1d1Ff987860Efa7B3e219";                                 // test address for Private Net
+    // Fund deposit address
+    address public ethFundDeposit = "0x1c82ee5b828455F870eb2998f2c9b6Cc2d52a5F6";                              
     address public owner;                                       // Owner of the pre sale contract
     mapping (address => uint256) public whiteList;
 
@@ -64,10 +63,12 @@ contract IndorsePreSale is SafeMath{
       ethFundDeposit.transfer(this.balance);                     // send the eth to Indorse multi-sig
     }
     
+    // @dev adds an Ethereum address to whitelist
     function setWhiteList(address _whitelisted) onlyOwner {
       whiteList[_whitelisted] = 1;
     }
 
+    // @dev removed an Ethereum address from whitelist
     function removeWhiteList(address _whitelisted) onlyOwner {
       whiteList[_whitelisted] = 0;
     }
