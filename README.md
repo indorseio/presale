@@ -6,7 +6,7 @@ You can more info about Indorse at https://indorse.io
 TECH DETAILS ABOUT THE INDORSE PRESALE CONTRACT
 =====================================================
 
-1. IndorsePreSale
+1. IndorsePreSale.sol
 
 (This contract has a ethFundDeposit address hard-coded in the contract)
 
