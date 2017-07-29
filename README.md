@@ -10,7 +10,7 @@ TECH DETAILS ABOUT THE INDORSE PRESALE CONTRACT
 
 (This contract has a ethFundDeposit address hard-coded in the contract)
 
-The minimum amount accepted in the presale is 100 Ether per Ethereum address and the overall cap on the public pre-sale is 13500 Ether. 
+The minimum amount accepted in the presale is 100 Ether per Ethereum address and the overall cap on the public pre-sale is 14000 Ether. 
 
 This is the process for presale - 
 ======================================================
